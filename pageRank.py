@@ -50,20 +50,29 @@ def init_ranklist(key):
 		
 def power_iteration():
 	temp_rank_list = {}
-	rank = 0.
+	rank = 0.0
+	diff = 0.0
 	for key, from_node_list in node_list.iteritems():
 		rank = (1-beta)*(1.0/node_size)
 		for from_key, value in from_node_list.iteritems():
 			if (rank_list.has_key(from_key)):
 				rank += beta * rank_list[from_key] * value
-		temp_rank_list[key] = rank		
+		temp_rank_list[key] = rank
+		diff+=abs(rank_list[key] - rank)	
 	rank_list.update(temp_rank_list)
 	temp_rank_list.clear()
+	return diff
 	
 				
 load_file()
-for i in xrange(1):
-	power_iteration()
+iter_count = 0
+iter_diff = 1.0
+while (iter_diff > 0.0000001):
+	iter_diff = power_iteration()
+	iter_count+=1
+	print("%d iteration: the difference is %.10f" % (iter_count, iter_diff))
+print("iteration completed")
+
 sorted_rank = sorted(rank_list.items(), key=operator.itemgetter(1), reverse=True)
 f = open("result.txt", "w")
 for i in xrange(100):
