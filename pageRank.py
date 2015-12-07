@@ -16,6 +16,9 @@ def load_file():
 	with open("web-Google.txt") as f:
 		for i in xrange(4):
 			f.readline()
+		#Init a node dict, each element represent a node
+		#and it contains another sub-dict which stores
+		#all the from_nodes which link to that node
 		for line in f:
 			from_node, to_node = line.split("\t", 1)
 			from_node = from_node.strip()
@@ -34,8 +37,6 @@ def load_file():
 		if (current_node == from_node):
 			for key in current_node_list.iterkeys():
 				update_nodelist(key, current_node, count)
-				
-		#print(node_list)
 				
 def update_nodelist(key, current_node, count):
 	if (not node_list.has_key(key)):
@@ -67,10 +68,12 @@ def power_iteration():
 load_file()
 iter_count = 0
 iter_diff = 1.0
+#Assume convergence if difference less than 0.0000001
 while (iter_diff > 0.0000001):
 	iter_diff = power_iteration()
 	iter_count+=1
 	print("%d iteration: the difference is %.10f" % (iter_count, iter_diff))
+	
 print("iteration completed")
 
 sorted_rank = sorted(rank_list.items(), key=operator.itemgetter(1), reverse=True)
