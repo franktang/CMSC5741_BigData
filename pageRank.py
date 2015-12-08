@@ -39,6 +39,10 @@ def load_file():
 				update_nodelist(key, current_node, count)
 				
 def update_nodelist(key, current_node, count):
+	'''
+	from_node = current_node
+	to_node = key
+	'''
 	if (not node_list.has_key(key)):
 		node_list[key] = {}
 		init_ranklist(key)
