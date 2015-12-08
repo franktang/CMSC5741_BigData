@@ -52,6 +52,7 @@ def mean_PCA(matrix):
 def image_PCA(matrix):
     '''calculate and display the eigenvectors'''
     eigenvector_size = 20
+    eigenvalue_size = 100
     eigenpair = []
     
     #calculate covariance matrix
@@ -62,8 +63,7 @@ def image_PCA(matrix):
     for i in xrange(len(eigenvalue)):
         eigenpair.append((np.abs(eigenvalue[i]), eigenvector[:,i]))
     sorted(eigenpair, key=operator.itemgetter(0), reverse=True)
-    pth = os.path.join("eigenvalues_for_space_%s.txt" % ('_'.join(str(e) for e in digit_space)))
-    eigenvalue_file = open(pth, 'w')
+    
 	#Display first 20 eigenvectors
     for i in xrange(eigenvector_size):
         #since the eigenvector is in unit length and it has components whose value < 0
@@ -72,12 +72,20 @@ def image_PCA(matrix):
         temp_eigenvector = eigenpair[i][1]*127.5
         temp_eigenvector = np.add(temp_eigenvector, np.ones(784)*127.5)
         display(temp_eigenvector.astype(np.uint8))
+    
+    #plot first 100 eigenvalues
+    pth = os.path.join("eigenvalues_for_space_%s.txt" % ('_'.join(str(e) for e in digit_space)))
+    eigenvalue_file = open(pth, 'w')    
+    for i in xrange(eigenvalue_size):
         eigenvalue_file.write(str(eigenpair[i][0]))
         eigenvalue_file.write("\n")
     eigenvalue_file.close()
         
 
 #load data
+#Define the digit space gonna load here
+#For example, if wanna load digit space 0 and 1
+#Then digit_space = [0,1]
 digit_space = [0,1,2]
 training_size = 5000
 X = load_data(digit_space, training_size)
